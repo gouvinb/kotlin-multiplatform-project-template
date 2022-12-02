@@ -1,0 +1,16 @@
+[versions]
+androidGradlePlugin = "7.3.1"
+kotlin = "1.7.22"
+# @keep this version, it is not used in a dependency declaration but it used for spotless configuration
+ktlint = "0.46.1"
+spotless = "6.12.0"
+
+[libraries]
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+dependencies-versions-gradlePlugin = "com.github.ben-manes:gradle-versions-plugin:0.44.0"
+dependencies-versions-update-gradlePlugin = "nl.littlerobots.vcu:plugin:0.7.0"
+dokka-gradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:1.7.20"
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
+spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
