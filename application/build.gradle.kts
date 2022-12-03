@@ -50,7 +50,7 @@ version = "0.1.0"
  * platforms and as a test source set on the JVM platform.
  */
 kotlin {
-    configureOrCreateNativePlatforms()
+    configureOrCreateNativePlatforms(jsCompilerType = IR)
         .forEach { kotlinTarget ->
             when (kotlinTarget) {
                 is KotlinNativeTarget -> kotlinTarget.apply {
