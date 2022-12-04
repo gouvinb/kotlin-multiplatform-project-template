@@ -1,3 +1,4 @@
+import io.github.kotlin.multiplaform.template.gradle.project.utils.SelectedTarget
 import io.github.kotlin.multiplaform.template.gradle.project.utils.SystemInfo.appleTargets
 import io.github.kotlin.multiplaform.template.gradle.project.utils.SystemInfo.linuxTargets
 import io.github.kotlin.multiplaform.template.gradle.project.utils.SystemInfo.mingwTargets
@@ -61,17 +62,22 @@ kotlin {
                         }
                     }
                 }
+
                 is KotlinJsTarget -> kotlinTarget.apply {
                     binaries {
                         executable()
                     }
                 }
+
                 is KotlinJvmTarget -> kotlinTarget.apply { /* no-op */ }
-                else -> { /* no-op */ }
+                else -> { /* no-op */
+                }
             }
         }
 
     sourceSets {
+        val selectedTarget = SelectedTarget.getFromProperty()
+
         val commonMain by getting {
             dependencies {
                 implementation(project(":library-lib-a"))
@@ -99,36 +105,42 @@ kotlin {
             dependsOn(commonTest)
         }
 
-        val jvmMain by getting {
-        }
-        val jvmTest by getting {
-            kotlin.srcDir("src/jvmTest/hashFunctions")
-            dependencies {}
-        }
-
-        val jsMain by getting {
-            dependsOn(nonJvmMain)
-            dependsOn(nonAppleMain)
-        }
-        val jsTest by getting {
-            dependsOn(nonJvmTest)
-        }
-
-        createSourceSet("nativeMain", parent = nonJvmMain) { nativeMain ->
-            createSourceSet("mingwMain", parent = nativeMain, children = mingwTargets) { mingwMain ->
-                mingwMain.dependsOn(nonAppleMain)
+        if (selectedTarget.matchWith(SelectedTarget.JVM) || selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+            val jvmMain by getting {
             }
-            createSourceSet("unixMain", parent = nativeMain) { unixMain ->
-                createSourceSet("linuxMain", parent = unixMain, children = linuxTargets) { linuxMain ->
-                    linuxMain.dependsOn(nonAppleMain)
+            val jvmTest by getting {
+                kotlin.srcDir("src/jvmTest/hashFunctions")
+                dependencies {}
+            }
+        }
+
+        if (selectedTarget.matchWith(SelectedTarget.JS)) {
+            val jsMain by getting {
+                dependsOn(nonJvmMain)
+                dependsOn(nonAppleMain)
+            }
+            val jsTest by getting {
+                dependsOn(nonJvmTest)
+            }
+        }
+
+        if (selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+            createSourceSet("nativeMain", parent = nonJvmMain) { nativeMain ->
+                createSourceSet("mingwMain", parent = nativeMain, children = mingwTargets) { mingwMain ->
+                    mingwMain.dependsOn(nonAppleMain)
                 }
-                createSourceSet("appleMain", parent = unixMain, children = appleTargets)
+                createSourceSet("unixMain", parent = nativeMain) { unixMain ->
+                    createSourceSet("linuxMain", parent = unixMain, children = linuxTargets) { linuxMain ->
+                        linuxMain.dependsOn(nonAppleMain)
+                    }
+                    createSourceSet("appleMain", parent = unixMain, children = appleTargets)
+                }
             }
-        }
 
-        createSourceSet("nativeTest", parent = commonTest, children = mingwTargets + linuxTargets) { nativeTest ->
-            nativeTest.dependsOn(nonJvmTest)
-            createSourceSet("appleTest", parent = nativeTest, children = appleTargets)
+            createSourceSet("nativeTest", parent = commonTest, children = mingwTargets + linuxTargets) { nativeTest ->
+                nativeTest.dependsOn(nonJvmTest)
+                createSourceSet("appleTest", parent = nativeTest, children = appleTargets)
+            }
         }
     }
 }
