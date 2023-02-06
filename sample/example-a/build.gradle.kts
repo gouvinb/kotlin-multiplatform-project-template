@@ -4,21 +4,29 @@ import io.github.kotlin.multiplaform.template.gradle.project.utils.SystemInfo.li
 import io.github.kotlin.multiplaform.template.gradle.project.utils.SystemInfo.mingwTargets
 import io.github.kotlin.multiplaform.template.gradle.project.utils.extenstion.configureOrCreateNativePlatforms
 import io.github.kotlin.multiplaform.template.gradle.project.utils.extenstion.createSourceSet
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.nio.charset.StandardCharsets
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.dokka")
 
+    id("io.github.kotlin.multiplaform.template.gradle.project.base.dokka")
     id("io.github.kotlin.multiplaform.template.gradle.project.base.spotless.java")
 }
 
 group = "io.github.kotlin.multiplaform.template.example.a"
 version = "0.1.0"
 
+repositories {
+    mavenCentral()
+    google()
+}
 
 /*
  * Here's the main hierarchy of variants. Any `expect` functions in one level of the tree are
@@ -142,5 +150,27 @@ kotlin {
                 createSourceSet("appleTest", parent = nativeTest, children = appleTargets)
             }
         }
+    }
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        @Suppress("SuspiciousCollectionReassignment")
+        freeCompilerArgs += "-Xjvm-default=all"
+    }
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = StandardCharsets.UTF_8.toString()
+    sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+    targetCompatibility = JavaVersion.VERSION_1_8.toString()
+}
+
+tasks.withType<Test> {
+    testLogging {
+        events(TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
+        exceptionFormat = TestExceptionFormat.FULL
+        showStandardStreams = false
     }
 }
