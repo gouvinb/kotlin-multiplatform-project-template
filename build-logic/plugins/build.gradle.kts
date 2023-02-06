@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets
 
 plugins {
     `kotlin-dsl`
+    `java-gradle-plugin`
 }
 
 group = "io.github.kotlin.multiplaform.template.gradle"
@@ -15,9 +16,10 @@ java {
 }
 
 dependencies {
-    implementation(libs.android.gradlePlugin)
-    implementation(libs.kotlin.gradlePlugin)
-    implementation(libs.spotless.gradlePlugin)
+    add("compileOnly", libs.android.gradlePlugin)
+    add("compileOnly", libs.dokka.gradlePlugin)
+    add("compileOnly", libs.kotlin.gradlePlugin)
+    add("compileOnly", libs.spotless.gradlePlugin)
 }
 
 gradlePlugin {
@@ -30,6 +32,14 @@ gradlePlugin {
         //     id = "io.github.kotlin.multiplaform.template.gradle.project.application.android"
         //     implementationClass = "io.github.kotlin.multiplaform.template.gradle.project.application.AndroidApplicationPlugin"
         // }
+
+        // Dokka
+        register("dokka") {
+            id = "io.github.kotlin.multiplaform.template.gradle.project.base.dokka"
+            implementationClass = "io.github.kotlin.multiplaform.template.gradle.project.base.DokkaPlugin"
+        }
+
+        // Spotless
         register("javaSpotless") {
             id = "io.github.kotlin.multiplaform.template.gradle.project.base.spotless.java"
             implementationClass = "io.github.kotlin.multiplaform.template.gradle.project.base.SpotlessJavaPlugin"
@@ -38,33 +48,5 @@ gradlePlugin {
             id = "io.github.kotlin.multiplaform.template.gradle.project.base.spotless.android"
             implementationClass = "io.github.kotlin.multiplaform.template.gradle.project.base.SpotlessAndroidPlugin"
         }
-    }
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-        freeCompilerArgs = freeCompilerArgs + "-Xjvm-default=all"
-        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
-
-    }
-}
-
-tasks.withType<JavaCompile>().configureEach {
-    options.encoding = StandardCharsets.UTF_8.toString()
-    sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-    targetCompatibility = JavaVersion.VERSION_1_8.toString()
-}
-
-tasks.withType<Test>().configureEach {
-    testLogging {
-        events(
-            TestLogEvent.STARTED,
-            TestLogEvent.PASSED,
-            TestLogEvent.SKIPPED,
-            TestLogEvent.FAILED
-        )
-        exceptionFormat = TestExceptionFormat.FULL
-        showStandardStreams = false
     }
 }

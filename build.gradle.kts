@@ -1,16 +1,13 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
-import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
-import org.gradle.api.tasks.testing.logging.TestLogEvent.STARTED
-import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.nio.charset.StandardCharsets
 
 plugins {
     `version-catalog`
+}
+
+repositories {
+    mavenCentral()
+    google()
 }
 
 buildscript {
@@ -50,69 +47,5 @@ tasks.withType<DependencyUpdatesTask> {
 versionCatalogUpdate {
     keep {
         version
-    }
-}
-
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
-    }
-
-    tasks.withType(DokkaTask::class).configureEach {
-        dokkaSourceSets.configureEach {
-            // includes.from("README.md")
-            // samples.from("samples/**.kt")
-
-            reportUndocumented.set(true)
-            skipDeprecated.set(true)
-            jdkVersion.set(11)
-            perPackageOption {
-                matchingRegex.set("io\\.github\\.kotlin\\.multiplaform\\.template\\..*\\.internal.*")
-                suppress.set(true)
-            }
-        }
-
-        if (name == "dokkaHtml") {
-            outputDirectory.set(file("${rootDir}/docs/$version/${project.name}"))
-            pluginsMapConfiguration.set(
-                mapOf(
-                    "org.jetbrains.dokka.base.DokkaBase" to """
-                    |{
-                    |  "customStyleSheets": [
-                    |    "${rootDir.toString().replace('\\', '/')}/docs/css/dokka-logo.css"
-                    |  ],
-                    |  "customAssets" : [
-                    |    "${rootDir.toString().replace('\\', '/')}/docs/images/ic_project.svg"
-                    |  ]
-                    |}
-                """.trimMargin()
-                )
-            )
-        }
-    }
-}
-
-subprojects {
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
-            @Suppress("SuspiciousCollectionReassignment")
-            freeCompilerArgs += "-Xjvm-default=all"
-        }
-    }
-
-    tasks.withType<JavaCompile> {
-        options.encoding = StandardCharsets.UTF_8.toString()
-        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-        targetCompatibility = JavaVersion.VERSION_1_8.toString()
-    }
-
-    tasks.withType<Test> {
-        testLogging {
-            events(STARTED, PASSED, SKIPPED, FAILED)
-            exceptionFormat = TestExceptionFormat.FULL
-            showStandardStreams = false
-        }
     }
 }
