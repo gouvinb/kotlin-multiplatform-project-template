@@ -2,10 +2,6 @@ import Settings_gradle.ModuleType.APP
 import Settings_gradle.ModuleType.LIBRARY
 import Settings_gradle.ModuleType.SAMPLE
 
-rootProject.name = "kotlin-multiplatform-project-template"
-
-rootProject.buildFileName = "build.gradle.kts"
-
 enum class ModuleType(private val parentDirName: String) {
     /**
      * Binary project type.
@@ -88,6 +84,9 @@ pluginManagement {
 //         gradlePluginPortal()
 //     }
 // }
+
+rootProject.name = "kotlin-multiplatform-project-template"
+rootProject.buildFileName = "build.gradle.kts"
 
 // App
 includeProject("application", APP)
