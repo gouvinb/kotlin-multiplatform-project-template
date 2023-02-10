@@ -17,7 +17,7 @@ class DokkaPlugin : Plugin<Project> {
 
                     reportUndocumented.set(true)
                     skipDeprecated.set(true)
-                    jdkVersion.set(JavaVersion.VERSION_1_8.toString().toInt())
+                    jdkVersion.set(JavaVersion.VERSION_11.toString().toInt())
                     perPackageOption {
                         matchingRegex.set("""io\.github\.kotlin\.multiplaform\.template\..*\.internal.*""")
                         suppress.set(true)
@@ -37,7 +37,7 @@ class DokkaPlugin : Plugin<Project> {
                             |    "${rootDir.toString().replace('\\', '/')}/docs/images/ic_project.svg"
                             |  ]
                             |}
-                            """.trimMargin()
+                            """.trimMargin(),
                         )
                     )
                 }

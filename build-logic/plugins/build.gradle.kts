@@ -10,16 +10,11 @@ plugins {
 
 group = "io.github.kotlin.multiplaform.template.gradle"
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_19
-    targetCompatibility = JavaVersion.VERSION_19
-}
-
 dependencies {
-    add("compileOnly", libs.android.gradlePlugin)
-    add("compileOnly", libs.dokka.gradlePlugin)
-    add("compileOnly", libs.kotlin.gradlePlugin)
-    add("compileOnly", libs.spotless.gradlePlugin)
+    implementation(libs.android.gradlePlugin)
+    implementation(libs.dokka.gradlePlugin)
+    implementation(libs.kotlin.gradlePlugin)
+    implementation(libs.spotless.gradlePlugin)
 }
 
 gradlePlugin {

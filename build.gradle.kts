@@ -1,5 +1,9 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.nio.charset.StandardCharsets
 
 plugins {
     `version-catalog`

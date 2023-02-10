@@ -155,7 +155,7 @@ kotlin {
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
         @Suppress("SuspiciousCollectionReassignment")
         freeCompilerArgs += "-Xjvm-default=all"
     }
@@ -163,8 +163,8 @@ tasks.withType<KotlinCompile>().configureEach {
 
 tasks.withType<JavaCompile> {
     options.encoding = StandardCharsets.UTF_8.toString()
-    sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-    targetCompatibility = JavaVersion.VERSION_1_8.toString()
+    sourceCompatibility = JavaVersion.VERSION_11.toString()
+    targetCompatibility = JavaVersion.VERSION_11.toString()
 }
 
 tasks.withType<Test> {
