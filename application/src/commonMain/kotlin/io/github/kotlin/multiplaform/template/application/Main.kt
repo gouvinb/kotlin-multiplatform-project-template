@@ -6,7 +6,7 @@ fun main() {
     println(
         """
             |Application:
-            |\t${Greeting().hello()}
-        """.trimMargin(),
+            |	${Greeting().hello()}
+        """.trimMargin()
     )
 }
