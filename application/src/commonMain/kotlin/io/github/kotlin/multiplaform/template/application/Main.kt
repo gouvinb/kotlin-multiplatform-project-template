@@ -7,6 +7,6 @@ fun main() {
         """
             |Application:
             |	${Greeting().hello()}
-        """.trimMargin()
+        """.trimMargin(),
     )
 }
