@@ -7,6 +7,6 @@ fun main() {
         """
             |Application:
             |\t${Greeting().hello()}
-        """.trimMargin()
+        """.trimMargin(),
     )
 }
