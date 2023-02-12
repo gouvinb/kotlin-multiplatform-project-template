@@ -16,18 +16,16 @@ jobs:
           gh extension install actions/gh-actions-cache
           
           REPO=${{ github.repository }}
-
-          echo "Fetching list of cache key..."
-          PR_CLOSED=$(gh pr list --state closed)
-          PR_CLOSED_BRANCH_NAMES=$(echo $PR_CLOSED | cut -f 3 | uniq)
-          PR_CLOSED_CACHE_KEYS= $(for branch in $PR_CLOSED_BRANCH_NAMES; do gh actions-cache list  -R $REPO -B $branch | cut -f 1; done) 
-
-          ## Setting this to not fail the workflow while deleting cache keys. 
+          
           set +e
-          for cacheKey in $PR_CLOSED_CACHE_KEYS
-          do
+          
+          echo "Fetching list of cache key..."
+          PR_CLOSED=$(gh pr list --state closed | cut -f 3 | uniq)
+          PR_CLOSED_CACHE_KEYS= $(for branch in $PR_CLOSED; do gh actions-cache list  -R $REPO -B $branch | cut -f 1; done) 
+          
+          for cacheKey in $PR_CLOSED_CACHE_KEYS; do
               echo "Delete $cacheKey cache..."
-              echo gh actions-cache delete $cacheKey -R $REPO --confirm
+              gh actions-cache delete $cacheKey -R $REPO --confirm
           done
           echo "Done"
         env:
