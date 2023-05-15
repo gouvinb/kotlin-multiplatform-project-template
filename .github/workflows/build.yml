@@ -58,16 +58,16 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 11
+          java-version: 17
           cache: 'gradle'
 
       - name: Build
         run: |
-          ./gradlew -Dtarget=JS build --stacktrace
+          ./gradlew -Dtarget=JS -Denvironment=CI build --stacktrace
 
       - name: Test
         run: |
-          ./gradlew -Dtarget=JS allTests --stacktrace
+          ./gradlew -Dtarget=JS -Denvironment=CI allTests --stacktrace
 
   native:
     runs-on: ${{ matrix.os }}
@@ -89,12 +89,12 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 11
+          java-version: 17
           cache: 'gradle'
 
       - name: Build
         run: |
-          ./gradlew -Dtarget=NATIVE build
+          ./gradlew -Dtarget=NATIVE build --stacktrace
 
       - name: Test
         run: |

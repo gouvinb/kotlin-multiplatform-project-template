@@ -1,29 +1,20 @@
-import io.github.kotlin.multiplaform.template.gradle.project.utils.SelectedTarget
-import io.github.kotlin.multiplaform.template.gradle.project.utils.SystemInfo.appleTargets
-import io.github.kotlin.multiplaform.template.gradle.project.utils.SystemInfo.linuxTargets
-import io.github.kotlin.multiplaform.template.gradle.project.utils.SystemInfo.mingwTargets
-import io.github.kotlin.multiplaform.template.gradle.project.utils.extenstion.configureOrCreateNativePlatforms
-import io.github.kotlin.multiplaform.template.gradle.project.utils.extenstion.createSourceSet
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.nio.charset.StandardCharsets
+import io.github.kotlin.multiplatform.template.gradle.utils.properties.SelectedTarget
+import io.github.kotlin.multiplatform.template.gradle.utils.extenstion.configureOrCreateNativePlatforms
+import io.github.kotlin.multiplatform.template.gradle.utils.extenstion.configureSourceSetHierarchy
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
 
-    id("io.github.kotlin.multiplaform.template.gradle.project.base.dokka")
-    id("io.github.kotlin.multiplaform.template.gradle.project.base.spotless.java")
+    id("io.github.kotlin.multiplatform.template.gradle.plugins.compile")
+    id("io.github.kotlin.multiplatform.template.gradle.plugins.test")
+
+    id("io.github.kotlin.multiplatform.template.gradle.plugins.dokka")
+    id("io.github.kotlin.multiplatform.template.gradle.plugins.spotless.java")
 }
 
-group = "io.github.kotlin.multiplaform.template.lib.a"
+group = "io.github.kotlin.multiplatform.template.lib.a"
 version = "0.1.0"
-
-repositories {
-    mavenCentral()
-    google()
-}
 
 /*
  * Here's the main hierarchy of variants. Any `expect` functions in one level of the tree are
@@ -59,6 +50,7 @@ kotlin {
     configureOrCreateNativePlatforms()
 
     sourceSets {
+        configureSourceSetHierarchy()
         val selectedTarget = SelectedTarget.getFromProperty()
 
         val commonMain by getting
@@ -68,80 +60,21 @@ kotlin {
             }
         }
 
-        val hashFunctions by creating {
-            dependsOn(commonMain)
-        }
+        val hashFunctions by getting {}
 
-        val nonAppleMain by creating {
-            dependsOn(hashFunctions)
-        }
+        val nonAppleMain by getting {}
 
-        val nonJvmMain by creating {
-            dependsOn(hashFunctions)
-            dependsOn(commonMain)
-        }
-        val nonJvmTest by creating {
-            dependsOn(commonTest)
-        }
+        val nonJvmMain by getting {}
+        val nonJvmTest by getting {}
 
         if (selectedTarget.matchWith(SelectedTarget.JVM) || selectedTarget.matchWith(SelectedTarget.NATIVE)) {
-            val jvmMain by getting {
-            }
-            val jvmTest by getting {
-                kotlin.srcDir("src/jvmTest/hashFunctions")
-                dependencies {}
-            }
+            val jvmMain by getting {}
+            val jvmTest by getting {}
         }
 
         if (selectedTarget.matchWith(SelectedTarget.JS)) {
-            val jsMain by getting {
-                dependsOn(nonJvmMain)
-                dependsOn(nonAppleMain)
-            }
-            val jsTest by getting {
-                dependsOn(nonJvmTest)
-            }
+            val jsMain by getting {}
+            val jsTest by getting {}
         }
-
-        if (selectedTarget.matchWith(SelectedTarget.NATIVE)) {
-            createSourceSet("nativeMain", parent = nonJvmMain) { nativeMain ->
-                createSourceSet("mingwMain", parent = nativeMain, children = mingwTargets) { mingwMain ->
-                    mingwMain.dependsOn(nonAppleMain)
-                }
-                createSourceSet("unixMain", parent = nativeMain) { unixMain ->
-                    createSourceSet("linuxMain", parent = unixMain, children = linuxTargets) { linuxMain ->
-                        linuxMain.dependsOn(nonAppleMain)
-                    }
-                    createSourceSet("appleMain", parent = unixMain, children = appleTargets)
-                }
-            }
-
-            createSourceSet("nativeTest", parent = commonTest, children = mingwTargets + linuxTargets) { nativeTest ->
-                nativeTest.dependsOn(nonJvmTest)
-                createSourceSet("appleTest", parent = nativeTest, children = appleTargets)
-            }
-        }
-    }
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-        @Suppress("SuspiciousCollectionReassignment")
-        freeCompilerArgs += "-Xjvm-default=all"
-    }
-}
-
-tasks.withType<JavaCompile> {
-    options.encoding = StandardCharsets.UTF_8.toString()
-    sourceCompatibility = JavaVersion.VERSION_11.toString()
-    targetCompatibility = JavaVersion.VERSION_11.toString()
-}
-
-tasks.withType<Test> {
-    testLogging {
-        events(TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
-        exceptionFormat = TestExceptionFormat.FULL
-        showStandardStreams = false
     }
 }
