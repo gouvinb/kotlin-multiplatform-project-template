@@ -2,9 +2,11 @@ package io.github.kotlin.multiplatform.template.gradle.utils.extenstion
 
 import io.github.kotlin.multiplatform.template.gradle.utils.properties.Environment
 import io.github.kotlin.multiplatform.template.gradle.utils.properties.SelectedTarget
+import org.gradle.api.Action
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 @Suppress("unused")
 fun KotlinMultiplatformExtension.configureOrCreateNativePlatforms(
@@ -29,11 +31,11 @@ fun KotlinMultiplatformExtension.configureOrCreateNativePlatforms(
                 }
             }
             nodejs {
-                testTask {
+                testTask(Action<KotlinJsTest> {
                     useMocha {
                         timeout = "30s"
                     }
-                }
+                })
             }
             if (environment == Environment.LOCAL) {
                 browser {
