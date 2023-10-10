@@ -15,7 +15,7 @@ fun KotlinMultiplatformExtension.configureOrCreateNativePlatforms(
     val selectedTarget = SelectedTarget.getFromProperty()
     val environment = Environment.getFromProperty()
 
-    if (selectedTarget.matchWith(SelectedTarget.JVM) || selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+    if (selectedTarget.matchWith(SelectedTarget.JVM)) {
         jvm {
             withJava()
         }.apply { add(this) }
