@@ -55,6 +55,9 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.configureSourceSetHierarchy() {
     val nonAppleMain = create("nonAppleMain") {
         dependsOn(hashFunctions)
     }
+    val nonAppleTest = create("nonAppleTest") {
+        dependsOn(hashFunctions)
+    }
 
     val nonJvmMain = create("nonJvmMain") {
         dependsOn(hashFunctions)
@@ -64,7 +67,7 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.configureSourceSetHierarchy() {
         dependsOn(commonTest)
     }
 
-    if (selectedTarget.matchWith(SelectedTarget.JVM) || selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+    if (selectedTarget.matchWith(SelectedTarget.JVM)) {
         getByName("jvmMain") {
         }
         getByName("jvmTest") {
@@ -95,14 +98,16 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.configureSourceSetHierarchy() {
                 createSourceSet("appleMain", parent = unixMain, children = SystemInfo.appleTargets)
             }
         }
-
-        createSourceSet(
-            "nativeTest",
-            parent = commonTest,
-            children = SystemInfo.mingwTargets + SystemInfo.linuxTargets
-        ) { nativeTest ->
-            nativeTest.dependsOn(nonJvmTest)
-            createSourceSet("appleTest", parent = nativeTest, children = SystemInfo.appleTargets)
+        createSourceSet("nativeTest", parent = nonJvmTest) { nativeTest ->
+            createSourceSet("mingwTest", parent = nativeTest, children = SystemInfo.mingwTargets) { mingwTest ->
+                mingwTest.dependsOn(nonAppleTest)
+            }
+            createSourceSet("unixTest", parent = nativeTest) { unixTest ->
+                createSourceSet("linuxTest", parent = unixTest, children = SystemInfo.linuxTargets) { linuxTest ->
+                    linuxTest.dependsOn(nonAppleTest)
+                }
+                createSourceSet("appleTest", parent = unixTest, children = SystemInfo.appleTargets)
+            }
         }
     }
 }

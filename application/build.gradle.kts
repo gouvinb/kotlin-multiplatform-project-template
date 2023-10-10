@@ -97,7 +97,7 @@ kotlin {
         val nonJvmMain by getting {}
         val nonJvmTest by getting {}
 
-        if (selectedTarget.matchWith(SelectedTarget.JVM) || selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+        if (selectedTarget.matchWith(SelectedTarget.JVM)) {
             val jvmMain by getting {}
             val jvmTest by getting {}
         }
@@ -105,6 +105,20 @@ kotlin {
         if (selectedTarget.matchWith(SelectedTarget.JS)) {
             val jsMain by getting {}
             val jsTest by getting {}
+        }
+
+        if (selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+            val nativeMain by getting {}
+            val nativeTest by getting {}
+
+            val appleMain by getting {}
+            val appleTest by getting {}
+
+            val linuxMain by getting {}
+            val linuxTest by getting {}
+
+            val mingwMain by getting {}
+            val mingwTest by getting {}
         }
     }
 }

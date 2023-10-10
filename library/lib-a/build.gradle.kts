@@ -67,7 +67,7 @@ kotlin {
         val nonJvmMain by getting {}
         val nonJvmTest by getting {}
 
-        if (selectedTarget.matchWith(SelectedTarget.JVM) || selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+        if (selectedTarget.matchWith(SelectedTarget.JVM)) {
             val jvmMain by getting {}
             val jvmTest by getting {}
         }
