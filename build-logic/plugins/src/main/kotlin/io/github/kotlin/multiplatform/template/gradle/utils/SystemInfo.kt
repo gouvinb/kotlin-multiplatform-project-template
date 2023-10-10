@@ -14,17 +14,17 @@ object SystemInfo {
         "tvosSimulatorArm64",
         "watchosArm32",
         "watchosArm64",
-        // "watchosX86",
         "watchosX64",
-        "watchosSimulatorArm64"
+        "watchosSimulatorArm64",
     )
 
     val mingwTargets = listOf(
-        "mingwX64"
+        "mingwX64",
     )
 
     val linuxTargets = listOf(
-        "linuxX64"
+        "linuxArm64",
+        "linuxX64",
     )
 
     val nativeTargets = appleTargets + linuxTargets + mingwTargets

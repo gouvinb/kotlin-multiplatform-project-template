@@ -58,6 +58,7 @@ fun KotlinMultiplatformExtension.configureOrCreateNativePlatforms(
         watchosSimulatorArm64().apply { add(this) }
         // Required to generate tests tasks: https://youtrack.jetbrains.com/issue/KT-26547
         linuxX64().apply { add(this) }
+        linuxArm64().apply { add(this) }
         macosX64().apply { add(this) }
         macosArm64().apply { add(this) }
         mingwX64().apply { add(this) }
