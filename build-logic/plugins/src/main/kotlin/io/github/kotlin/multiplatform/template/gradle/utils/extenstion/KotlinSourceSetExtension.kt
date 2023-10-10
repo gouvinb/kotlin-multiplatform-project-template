@@ -48,19 +48,22 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.configureSourceSetHierarchy() {
     val commonMain = get("commonMain")
     val commonTest = get("commonTest")
 
-    val hashFunctions = create("hashFunctions") {
+    val hashFunctionsMain = create("hashFunctionsMain") {
         dependsOn(commonMain)
+    }
+    val hashFunctionsTest = create("hashFunctionsTest") {
+        dependsOn(commonTest)
     }
 
     val nonAppleMain = create("nonAppleMain") {
-        dependsOn(hashFunctions)
+        dependsOn(hashFunctionsMain)
     }
     val nonAppleTest = create("nonAppleTest") {
-        dependsOn(hashFunctions)
+        dependsOn(hashFunctionsTest)
     }
 
     val nonJvmMain = create("nonJvmMain") {
-        dependsOn(hashFunctions)
+        dependsOn(hashFunctionsMain)
         dependsOn(commonMain)
     }
     val nonJvmTest = create("nonJvmTest") {

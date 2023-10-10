@@ -90,9 +90,11 @@ kotlin {
             }
         }
 
-        val hashFunctions by getting {}
+        val hashFunctionsMain by getting {}
+        val hashFunctionsTest by getting {}
 
         val nonAppleMain by getting {}
+        val nonAppleTest by getting {}
 
         val nonJvmMain by getting {}
         val nonJvmTest by getting {}
