@@ -1,6 +1,6 @@
-import io.github.kotlin.multiplatform.template.gradle.utils.properties.SelectedTarget
 import io.github.kotlin.multiplatform.template.gradle.utils.extenstion.configureOrCreateNativePlatforms
 import io.github.kotlin.multiplatform.template.gradle.utils.extenstion.configureSourceSetHierarchy
+import io.github.kotlin.multiplatform.template.gradle.utils.properties.SelectedTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
@@ -90,37 +90,39 @@ kotlin {
             }
         }
 
-        val hashFunctionsMain by getting {}
-        val hashFunctionsTest by getting {}
-
-        val nonAppleMain by getting {}
-        val nonAppleTest by getting {}
-
-        val nonJvmMain by getting {}
-        val nonJvmTest by getting {}
-
         if (selectedTarget.matchWith(SelectedTarget.JVM)) {
             val jvmMain by getting {}
             val jvmTest by getting {}
         }
 
-        if (selectedTarget.matchWith(SelectedTarget.JS)) {
-            val jsMain by getting {}
-            val jsTest by getting {}
-        }
+        if (selectedTarget.matchNotWith(SelectedTarget.JVM)) {
+            val hashFunctionsMain by getting {}
+            val hashFunctionsTest by getting {}
 
-        if (selectedTarget.matchWith(SelectedTarget.NATIVE)) {
-            val nativeMain by getting {}
-            val nativeTest by getting {}
+            val nonAppleMain by getting {}
+            val nonAppleTest by getting {}
 
-            val appleMain by getting {}
-            val appleTest by getting {}
+            val nonJvmMain by getting {}
+            val nonJvmTest by getting {}
 
-            val linuxMain by getting {}
-            val linuxTest by getting {}
+            if (selectedTarget.matchWith(SelectedTarget.JS)) {
+                val jsMain by getting {}
+                val jsTest by getting {}
+            }
 
-            val mingwMain by getting {}
-            val mingwTest by getting {}
+            if (selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+                val nativeMain by getting {}
+                val nativeTest by getting {}
+
+                val appleMain by getting {}
+                val appleTest by getting {}
+
+                val linuxMain by getting {}
+                val linuxTest by getting {}
+
+                val mingwMain by getting {}
+                val mingwTest by getting {}
+            }
         }
     }
 }
