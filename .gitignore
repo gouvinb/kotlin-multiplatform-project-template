@@ -179,6 +179,11 @@ local.properties
 #.project
 
 ###############################################################################
+# Fleet
+
+.fleet/
+
+###############################################################################
 # Jetbrains
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider

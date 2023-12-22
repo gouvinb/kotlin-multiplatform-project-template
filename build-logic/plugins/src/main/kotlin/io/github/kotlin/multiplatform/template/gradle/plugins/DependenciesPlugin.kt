@@ -29,7 +29,9 @@ class DependenciesPlugin : Plugin<Project> {
 
             extensions.configure<VersionCatalogUpdateExtension> {
                 keep {
-                    version
+                    keepUnusedVersions.set(true)
+                    keepUnusedLibraries.set(true)
+                    keepUnusedPlugins.set(true)
                 }
             }
         }
