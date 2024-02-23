@@ -196,6 +196,9 @@ local.properties
 .idea/**/dictionaries
 .idea/**/shelf
 
+.idea/**/assetWizardSettings.xml
+.idea/**/deploymentTargetDropDown.xml
+
 # AWS User-specific
 .idea/**/aws.xml
 
