@@ -50,12 +50,6 @@ gradlePlugin {
             implementationClass = "plugins.CompileKotlinPlugin"
         }
 
-        // Dependencies
-        register("dependencies") {
-            id = "plugins.dependencies"
-            implementationClass = "plugins.DependenciesPlugin"
-        }
-
         // Dokka
         register("dokka") {
             id = "plugins.dokka"

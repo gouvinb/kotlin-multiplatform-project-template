@@ -17,5 +17,4 @@ buildscript {
 
 plugins {
     `version-catalog`
-    id("plugins.dependencies")
 }
