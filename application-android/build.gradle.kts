@@ -1,3 +1,6 @@
+import utils.extenstion.configureOrCreateNativePlatforms
+import utils.extenstion.configureSourceSetHierarchy
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("plugin.android.application")
@@ -37,17 +40,28 @@ android {
 }
 
 kotlin {
-    androidTarget {
-        dependencies {
-            implementation(libs.androidx.activity.compose)
+    configureOrCreateNativePlatforms(
+        enableAndroidProject = true,
+    )
+    sourceSets {
+        configureSourceSetHierarchy(
+            enableAndroidProject = true,
+        )
 
-            implementation(libs.androidx.compose.foundation)
-            implementation(libs.androidx.compose.material3)
-            implementation(libs.androidx.compose.runtime)
-            implementation(libs.androidx.compose.ui.tooling)
-            implementation(libs.androidx.compose.ui.tooling.preview)
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.androidx.activity.compose)
 
-            implementation(projects.library.libA)
+                implementation(libs.androidx.compose.foundation)
+                implementation(libs.androidx.compose.material3)
+                implementation(libs.androidx.compose.runtime)
+                implementation(libs.androidx.compose.ui.tooling)
+                implementation(libs.androidx.compose.ui.tooling.preview)
+
+                implementation(projects.library.libA)
+            }
         }
+        val androidUnitTest by getting {}
+        val androidInstrumentedTest by getting {}
     }
 }

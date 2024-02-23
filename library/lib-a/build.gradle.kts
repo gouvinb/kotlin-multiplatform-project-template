@@ -1,6 +1,5 @@
 import utils.extenstion.configureOrCreateNativePlatforms
 import utils.extenstion.configureSourceSetHierarchy
-import utils.properties.SelectedTarget
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -61,11 +60,20 @@ android {
  * platforms and as a test source set on the JVM platform.
  */
 kotlin {
-    configureOrCreateNativePlatforms(isAndroidProject = true)
+    configureOrCreateNativePlatforms(
+        enableAndroidProject = true,
+        enableJvmProject = true,
+        enableJsProject = true,
+        enableNativeProject = true,
+    )
 
     sourceSets {
-        configureSourceSetHierarchy(isAndroidProject = true)
-        val selectedTarget = SelectedTarget.getFromProperty()
+        configureSourceSetHierarchy(
+            enableAndroidProject = true,
+            enableJvmProject = true,
+            enableJsProject = true,
+            enableNativeProject = true,
+        )
 
         val commonMain by getting
         val commonTest by getting {
@@ -74,49 +82,39 @@ kotlin {
             }
         }
 
-        if (selectedTarget.matchWith(SelectedTarget.ANDROID)) {
-            val androidMain by getting {
-                dependencies {
-                    implementation(libs.androidx.compose.runtime)
-                }
-            }
-            val androidUnitTest by getting {}
-            val androidInstrumentedTest by getting {}
-        }
-
-        if (selectedTarget.matchWith(SelectedTarget.JVM)) {
-            val jvmMain by getting {}
-            val jvmTest by getting {}
-        }
-
-        if (selectedTarget.matchNotWith(SelectedTarget.JVM)) {
-            val hashFunctionsMain by getting {}
-            val hashFunctionsTest by getting {}
-
-            val nonAppleMain by getting {}
-            val nonAppleTest by getting {}
-
-            val nonJvmMain by getting {}
-            val nonJvmTest by getting {}
-
-            if (selectedTarget.matchWith(SelectedTarget.JS)) {
-                val jsMain by getting {}
-                val jsTest by getting {}
-            }
-
-            if (selectedTarget.matchWith(SelectedTarget.NATIVE)) {
-                val nativeMain by getting {}
-                val nativeTest by getting {}
-
-                val appleMain by getting {}
-                val appleTest by getting {}
-
-                val linuxMain by getting {}
-                val linuxTest by getting {}
-
-                val mingwMain by getting {}
-                val mingwTest by getting {}
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.androidx.compose.runtime)
             }
         }
+        val androidUnitTest by getting {}
+        val androidInstrumentedTest by getting {}
+
+        val jvmMain by getting {}
+        val jvmTest by getting {}
+
+        val hashFunctionsMain by getting {}
+        val hashFunctionsTest by getting {}
+
+        val nonAppleMain by getting {}
+        val nonAppleTest by getting {}
+
+        val nonJvmMain by getting {}
+        val nonJvmTest by getting {}
+
+        val jsMain by getting {}
+        val jsTest by getting {}
+
+        val nativeMain by getting {}
+        val nativeTest by getting {}
+
+        val appleMain by getting {}
+        val appleTest by getting {}
+
+        val linuxMain by getting {}
+        val linuxTest by getting {}
+
+        val mingwMain by getting {}
+        val mingwTest by getting {}
     }
 }

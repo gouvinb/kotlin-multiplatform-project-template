@@ -18,7 +18,15 @@ abstract class SpotlessPlugin(private val isAndroidProject: Boolean) : Plugin<Pr
                     target("**/*.kt")
                     targetExclude("**/build/**/*.kt")
                     ktlint(libs.findVersion("ktlint").get().toString())
-                        .editorConfigOverride(mapOf("ktlint_code_style" to if (isAndroidProject) "android_studio" else "intellij_idea"))
+                        .editorConfigOverride(
+                            buildMap {
+                                put("ktlint_code_style", if (isAndroidProject) "android_studio" else "intellij_idea")
+                                put("android", if (isAndroidProject) "true" else "false")
+                                if (isAndroidProject) {
+                                    put("ktlint_function_naming_ignore_when_annotated_with", "Composable, Test")
+                                }
+                            }
+                        )
                     // licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
                 }
                 format("kts") {

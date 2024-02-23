@@ -13,5 +13,5 @@ object ProjectInfo {
 
     const val MIN_SDK = 33
 
-    val JAVA_VERSION = JavaVersion.VERSION_11
+    val JAVA_VERSION = JavaVersion.VERSION_17
 }

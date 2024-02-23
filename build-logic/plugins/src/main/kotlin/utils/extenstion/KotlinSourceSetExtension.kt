@@ -1,10 +1,9 @@
 package utils.extenstion
 
-import utils.SystemInfo
-import utils.properties.SelectedTarget
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import utils.SystemInfo
 
 /**
  * Creates a source set for a directory that isn't already a built-in platform. Use this to create
@@ -76,14 +75,15 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.createSourceSet(
  * platforms and as a test source set on the JVM platform.
  */
 fun NamedDomainObjectContainer<KotlinSourceSet>.configureSourceSetHierarchy(
-    isAndroidProject: Boolean = false,
+    enableAndroidProject: Boolean = false,
+    enableJvmProject: Boolean = false,
+    enableJsProject: Boolean = false,
+    enableNativeProject: Boolean = false,
 ) {
-    val selectedTarget = SelectedTarget.getFromProperty()
-
     val commonMain = get("commonMain")
     val commonTest = get("commonTest")
 
-    if (selectedTarget.matchWith(SelectedTarget.ANDROID) && isAndroidProject) {
+    if (enableAndroidProject) {
         getByName("androidMain") {
         }
         getByName("androidUnitTest") {
@@ -96,7 +96,7 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.configureSourceSetHierarchy(
         }
     }
 
-    if (selectedTarget.matchWith(SelectedTarget.JVM)) {
+    if (enableJvmProject) {
         getByName("jvmMain") {
         }
         getByName("jvmTest") {
@@ -105,7 +105,7 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.configureSourceSetHierarchy(
         }
     }
 
-    if (selectedTarget.matchNotWith(SelectedTarget.JVM)) {
+    if (enableJsProject || enableNativeProject) {
         val hashFunctionsMain = create("hashFunctionsMain") {
             dependsOn(commonMain)
         }
@@ -128,7 +128,7 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.configureSourceSetHierarchy(
             dependsOn(commonTest)
         }
 
-        if (selectedTarget.matchWith(SelectedTarget.JS)) {
+        if (enableJsProject) {
             getByName("jsMain") {
                 dependsOn(nonJvmMain)
                 dependsOn(nonAppleMain)
@@ -139,7 +139,7 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.configureSourceSetHierarchy(
             }
         }
 
-        if (selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+        if (enableNativeProject) {
             createSourceSet("nativeMain", parent = nonJvmMain) { nativeMain ->
                 createSourceSet("mingwMain", parent = nativeMain, children = SystemInfo.mingwTargets) { mingwMain ->
                     mingwMain.dependsOn(nonAppleMain)

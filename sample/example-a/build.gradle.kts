@@ -1,9 +1,8 @@
-import utils.properties.SelectedTarget
-import utils.extenstion.configureOrCreateNativePlatforms
-import utils.extenstion.configureSourceSetHierarchy
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
+import utils.extenstion.configureOrCreateNativePlatforms
+import utils.extenstion.configureSourceSetHierarchy
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -53,8 +52,11 @@ version = "0.1.0"
  * platforms and as a test source set on the JVM platform.
  */
 kotlin {
-    configureOrCreateNativePlatforms(IR)
-        .forEach { kotlinTarget ->
+    configureOrCreateNativePlatforms(
+        enableJvmProject = true,
+        enableJsProject = true,
+        enableNativeProject = true,
+    ).forEach { kotlinTarget ->
             when (kotlinTarget) {
                 is KotlinNativeTarget -> kotlinTarget.apply {
                     binaries {
@@ -78,8 +80,11 @@ kotlin {
         }
 
     sourceSets {
-        configureSourceSetHierarchy()
-        val selectedTarget = SelectedTarget.getFromProperty()
+        configureSourceSetHierarchy(
+            enableJvmProject = true,
+            enableJsProject = true,
+            enableNativeProject = true,
+        )
 
         val commonMain by getting {
             dependencies {
@@ -92,39 +97,31 @@ kotlin {
             }
         }
 
-        if (selectedTarget.matchWith(SelectedTarget.JVM)) {
-            val jvmMain by getting {}
-            val jvmTest by getting {}
-        }
+        val jvmMain by getting {}
+        val jvmTest by getting {}
 
-        if (selectedTarget.matchNotWith(SelectedTarget.JVM)) {
-            val hashFunctionsMain by getting {}
-            val hashFunctionsTest by getting {}
+        val hashFunctionsMain by getting {}
+        val hashFunctionsTest by getting {}
 
-            val nonAppleMain by getting {}
-            val nonAppleTest by getting {}
+        val nonAppleMain by getting {}
+        val nonAppleTest by getting {}
 
-            val nonJvmMain by getting {}
-            val nonJvmTest by getting {}
+        val nonJvmMain by getting {}
+        val nonJvmTest by getting {}
 
-            if (selectedTarget.matchWith(SelectedTarget.JS)) {
-                val jsMain by getting {}
-                val jsTest by getting {}
-            }
+        val jsMain by getting {}
+        val jsTest by getting {}
 
-            if (selectedTarget.matchWith(SelectedTarget.NATIVE)) {
-                val nativeMain by getting {}
-                val nativeTest by getting {}
+        val nativeMain by getting {}
+        val nativeTest by getting {}
 
-                val appleMain by getting {}
-                val appleTest by getting {}
+        val appleMain by getting {}
+        val appleTest by getting {}
 
-                val linuxMain by getting {}
-                val linuxTest by getting {}
+        val linuxMain by getting {}
+        val linuxTest by getting {}
 
-                val mingwMain by getting {}
-                val mingwTest by getting {}
-            }
-        }
+        val mingwMain by getting {}
+        val mingwTest by getting {}
     }
 }

@@ -1,7 +1,6 @@
 package utils.extenstion
 
 import utils.properties.Environment
-import utils.properties.SelectedTarget
 import org.gradle.api.Action
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
@@ -12,25 +11,25 @@ import utils.ProjectInfo
 @Suppress("unused")
 fun KotlinMultiplatformExtension.configureOrCreateNativePlatforms(
     jsCompilerType: KotlinJsCompilerType = KotlinJsCompilerType.IR,
-    isAndroidProject: Boolean = false,
+    enableAndroidProject: Boolean = false,
+    enableJvmProject: Boolean = false,
+    enableJsProject: Boolean = false,
+    enableNativeProject: Boolean = false,
 ) = ArrayList<KotlinTarget>().apply {
-    val selectedTarget = SelectedTarget.getFromProperty()
     val environment = Environment.getFromProperty()
 
-    if (selectedTarget.matchWith(SelectedTarget.ANDROID) && isAndroidProject) {
-        androidTarget() {
-        }
-            .apply { add(this) }
+    if (enableAndroidProject) {
+        androidTarget().apply { add(this) }
     }
 
-    if (selectedTarget.matchWith(SelectedTarget.JVM)) {
+    if (enableJvmProject) {
         jvm {
-            if (!isAndroidProject) withJava()
+            if (!enableAndroidProject) withJava()
             jvmToolchain(ProjectInfo.JAVA_VERSION.majorVersion.toInt())
         }.apply { add(this) }
     }
 
-    if (selectedTarget.matchWith(SelectedTarget.JS)) {
+    if (enableJsProject) {
         js(jsCompilerType) {
             compilations.all {
                 kotlinOptions {
@@ -53,7 +52,7 @@ fun KotlinMultiplatformExtension.configureOrCreateNativePlatforms(
         }.apply { add(this) }
     }
 
-    if (selectedTarget.matchWith(SelectedTarget.NATIVE)) {
+    if (enableNativeProject) {
         iosArm64().apply { add(this) }
         iosSimulatorArm64().apply { add(this) }
         tvosArm64().apply { add(this) }
