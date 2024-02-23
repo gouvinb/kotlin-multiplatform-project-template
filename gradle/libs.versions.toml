@@ -19,7 +19,7 @@ gradlePlugin-versionCatalogUpdate = "0.8.1"
 junit = "4.13.2"
 kotlin = "1.9.22"
 ktlint = "1.1.0"
-mockito-core = "5.5.0"
+mockito-core = "5.10.0"
 mockito-kotlin = "5.1.0"
 
 [libraries]
