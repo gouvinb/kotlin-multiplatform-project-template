@@ -198,6 +198,7 @@ local.properties
 
 .idea/**/assetWizardSettings.xml
 .idea/**/deploymentTargetDropDown.xml
+.idea/**/inspectionProfiles/
 
 # AWS User-specific
 .idea/**/aws.xml
