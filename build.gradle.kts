@@ -10,8 +10,6 @@ buildscript {
         classpath(libs.gradlePlugin.kotlin)
         classpath(libs.gradlePlugin.dokka)
         classpath(libs.gradlePlugin.spotless)
-        classpath(libs.gradlePlugin.dependencies.versions)
-        classpath(libs.gradlePlugin.dependencies.versions.update)
     }
 }
 
