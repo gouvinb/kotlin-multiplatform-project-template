@@ -1,6 +1,6 @@
-import io.github.kotlin.multiplatform.template.gradle.utils.properties.SelectedTarget
-import io.github.kotlin.multiplatform.template.gradle.utils.extenstion.configureOrCreateNativePlatforms
-import io.github.kotlin.multiplatform.template.gradle.utils.extenstion.configureSourceSetHierarchy
+import utils.properties.SelectedTarget
+import utils.extenstion.configureOrCreateNativePlatforms
+import utils.extenstion.configureSourceSetHierarchy
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
@@ -9,11 +9,11 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 plugins {
     kotlin("multiplatform")
 
-    id("io.github.kotlin.multiplatform.template.gradle.plugins.compile")
-    id("io.github.kotlin.multiplatform.template.gradle.plugins.test")
+    id("plugins.compile.kotlin")
+    id("plugins.test")
 
-    id("io.github.kotlin.multiplatform.template.gradle.plugins.dokka")
-    id("io.github.kotlin.multiplatform.template.gradle.plugins.spotless.java")
+    id("plugins.dokka")
+    id("plugins.spotless.java")
 }
 
 group = "io.github.kotlin.multiplatform.template.example.a"
@@ -31,17 +31,20 @@ version = "0.1.0"
  *       |- unix
  *       |   |-- apple
  *       |   |   |-- iosArm64
- *       |   |   |-- iosX64
- *       |   |   |-- macosX64
+ *       |   |   |-- macosArm64
  *       |   |   |-- tvosArm64
- *       |   |   |-- tvosX64
- *       |   |   |-- watchosArm32
- *       |   |   |-- watchosArm64
- *       |   |   '-- watchosX86
+ *       |   |   '-- watchosArm64
  *       |   '-- linux
+ *       |       |-- linuxArm64
  *       |       '-- linuxX64
  *       '-- mingw
  *           '-- mingwX64
+ * ```
+ *
+ * The `nonJvm` source set excludes that platform.
+ *
+ * The `hashFunctions` source set builds on all platforms. It ships as a main source set on non-JVM
+ * platforms and as a test source set on the JVM platform.
  * ```
  *
  * The `nonJvm` source set excludes that platform.

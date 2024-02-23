@@ -17,5 +17,5 @@ buildscript {
 
 plugins {
     `version-catalog`
-    id("io.github.kotlin.multiplatform.template.gradle.plugins.dependencies")
+    id("plugins.dependencies")
 }

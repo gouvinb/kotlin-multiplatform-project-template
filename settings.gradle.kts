@@ -103,6 +103,7 @@ rootProject.buildFileName = "build.gradle.kts"
 
 // App
 includeProject("application", app)
+includeProject("application-android", app)
 
 // Libs
 includeProject("lib-a", library)

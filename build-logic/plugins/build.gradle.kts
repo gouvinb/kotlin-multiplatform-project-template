@@ -17,46 +17,65 @@ dependencies {
 gradlePlugin {
     plugins {
         // register("javaApplication") {
-        //     id = "io.github.kotlin.multiplatform.template.gradle.application.java"
-        //     implementationClass = "io.github.kotlin.multiplatform.template.gradle.application.JavaApplicationPlugin"
-        // }
-        // register("androidApplication") {
-        //     id = "io.github.kotlin.multiplatform.template.gradle.application.android"
-        //     implementationClass = "io.github.kotlin.multiplatform.template.gradle.application.AndroidApplicationPlugin"
+        //     id = "application.java"
+        //     implementationClass = "application.JavaApplicationPlugin"
         // }
 
+        // Android
+        register("androidApplication") {
+            id = "plugin.android.application"
+            implementationClass = "plugins.AndroidApplicationPlugin"
+        }
+        register("androidLibrary") {
+            id = "plugin.android.library"
+            implementationClass = "plugins.AndroidLibraryPlugin"
+        }
+
+        register("androidComposeApplication") {
+            id = "plugin.android.application.compose"
+            implementationClass = "plugins.AndroidComposeApplicationPlugin"
+        }
+        register("androidComposeLibrary") {
+            id = "plugin.android.library.compose"
+            implementationClass = "plugins.AndroidComposeLibraryPlugin"
+        }
+
         // Compile
-        register("compile") {
-            id = "io.github.kotlin.multiplatform.template.gradle.plugins.compile"
-            implementationClass = "io.github.kotlin.multiplatform.template.gradle.plugins.CompilePlugin"
+        register("compileJava") {
+            id = "plugins.compile.java"
+            implementationClass = "plugins.CompileJavaPlugin"
+        }
+        register("compileKotlin") {
+            id = "plugins.compile.kotlin"
+            implementationClass = "plugins.CompileKotlinPlugin"
         }
 
         // Dependencies
         register("dependencies") {
-            id = "io.github.kotlin.multiplatform.template.gradle.plugins.dependencies"
-            implementationClass = "io.github.kotlin.multiplatform.template.gradle.plugins.DependenciesPlugin"
+            id = "plugins.dependencies"
+            implementationClass = "plugins.DependenciesPlugin"
         }
 
         // Dokka
         register("dokka") {
-            id = "io.github.kotlin.multiplatform.template.gradle.plugins.dokka"
-            implementationClass = "io.github.kotlin.multiplatform.template.gradle.plugins.DokkaPlugin"
+            id = "plugins.dokka"
+            implementationClass = "plugins.DokkaPlugin"
         }
 
         // Spotless
         register("javaSpotless") {
-            id = "io.github.kotlin.multiplatform.template.gradle.plugins.spotless.java"
-            implementationClass = "io.github.kotlin.multiplatform.template.gradle.plugins.SpotlessJavaPlugin"
+            id = "plugins.spotless.java"
+            implementationClass = "plugins.SpotlessJavaPlugin"
         }
         register("androidSpotless") {
-            id = "io.github.kotlin.multiplatform.template.gradle.plugins.spotless.android"
-            implementationClass = "io.github.kotlin.multiplatform.template.gradle.plugins.SpotlessAndroidPlugin"
+            id = "plugins.spotless.android"
+            implementationClass = "plugins.SpotlessAndroidPlugin"
         }
 
         // Test
         register("test") {
-            id = "io.github.kotlin.multiplatform.template.gradle.plugins.test"
-            implementationClass = "io.github.kotlin.multiplatform.template.gradle.plugins.TestPlugin"
+            id = "plugins.test"
+            implementationClass = "plugins.TestPlugin"
         }
     }
 }
