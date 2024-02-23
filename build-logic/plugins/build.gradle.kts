@@ -10,8 +10,6 @@ dependencies {
     implementation(libs.gradlePlugin.dokka)
     implementation(libs.gradlePlugin.kotlin)
     implementation(libs.gradlePlugin.spotless)
-    implementation(libs.gradlePlugin.dependencies.versions)
-    implementation(libs.gradlePlugin.dependencies.versions.update)
 }
 
 gradlePlugin {
