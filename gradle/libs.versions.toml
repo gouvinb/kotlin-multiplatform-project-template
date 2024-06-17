@@ -1,7 +1,7 @@
 [versions]
 android-desugar-jdk = "2.0.4"
 androidx-activity-compose = "1.8.2"
-androidx-compose-bom = "2024.02.02"
+androidx-compose-bom = "2024.06.00"
 androidx-compose-compiler = "1.5.10"
 androidx-compose-runtime-tracing = "1.0.0-beta01"
 androidx-test = "1.5.0"
